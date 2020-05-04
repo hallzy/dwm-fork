@@ -1,9 +1,19 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 #define GAP 5
 
+#define VOL_MUTE_BTN     XF86XK_AudioMute
+#define VOL_DOWN_BTN     XF86XK_AudioLowerVolume
+#define VOL_UP_BTN       XF86XK_AudioRaiseVolume
+#define BRIGHT_UP_BTN    XF86XK_MonBrightnessUp
+#define BRIGHT_DOWN_BTN  XF86XK_MonBrightnessDown
+
+#define BIN "/home/steven/Documents/git-repos/remote-github/dotfiles/.bin"
+
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = GAP;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = GAP;       /* vert inner gap between windows */
@@ -51,7 +61,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -72,8 +82,14 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { BIN "/dmenu_shortcut", NULL };
+static const char *termcmd[]  = { BIN "/st_tabbed", NULL };
+
+static const char *mutecmd[]    = { BIN "/special_keys.sh", "voltoggle"  , NULL };
+static const char *volupcmd[]   = { BIN "/special_keys.sh", "volup"      , NULL };
+static const char *voldowncmd[] = { BIN "/special_keys.sh", "voldown"    , NULL };
+static const char *brupcmd[]    = { BIN "/special_keys.sh", "brightup"   , NULL };
+static const char *brdowncmd[]  = { BIN "/special_keys.sh", "brightdown" , NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -92,7 +108,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ControlMask,		XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -112,6 +128,11 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_BackSpace, quit,        {0} },
+	{ 0,                            VOL_MUTE_BTN, spawn,       {.v = mutecmd } },
+	{ 0,                            VOL_DOWN_BTN, spawn,       {.v = voldowncmd } },
+	{ 0,                            VOL_UP_BTN, spawn,         {.v = volupcmd } },
+	{ 0,                            BRIGHT_UP_BTN, spawn,      {.v = brupcmd} },
+	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd} },
 };
 
 /* button definitions */
@@ -130,4 +151,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
