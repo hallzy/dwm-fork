@@ -2,7 +2,7 @@
 
 #include <X11/XF86keysym.h>
 
-#define GAP 5
+#define GAP 6
 
 #define VOL_MUTE_BTN     XF86XK_AudioMute
 #define VOL_DOWN_BTN     XF86XK_AudioLowerVolume
@@ -10,10 +10,22 @@
 #define BRIGHT_UP_BTN    XF86XK_MonBrightnessUp
 #define BRIGHT_DOWN_BTN  XF86XK_MonBrightnessDown
 
+
+// more readable mouse buttons
+#define LEFT_CLICK    Button1
+#define MIDDLE_CLICK  Button2
+#define RIGHT_CLICK   Button3
+#define SCROLL_UP     Button4
+#define SCROLL_DOWN   Button5
+#define SCROLL_LEFT   Button6
+#define SCROLL_RIGHT  Button7
+#define MOUSE_BACK    Button8
+#define MOUSE_FORWARD Button9
+
 #define BIN "/home/steven/Documents/git-repos/remote-github/dotfiles/.bin"
 
 /* appearance */
-static const unsigned int borderpx  = 5;        /* border pixel of windows */
+static const unsigned int borderpx  = 6;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = GAP;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = GAP;       /* vert inner gap between windows */
@@ -62,6 +74,13 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+
+
+// Super+num             ==> Change view to tag numbered num
+// Super+shift+num       ==> Move current window to tag 'num'
+// Super+ctrl+num        ==> Temporarily show all windows in tag 'num' in
+//                           current tag
+// Super+ctrl+shift+num  ==> Show the active window on tag 'num' as well
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -84,6 +103,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { BIN "/dmenu_shortcut", NULL };
 static const char *termcmd[]  = { BIN "/st_tabbed", NULL };
+static const char *wificmd[]  = { BIN "/wifi-connect", NULL };
+
 
 static const char *mutecmd[]    = { BIN "/special_keys.sh", "voltoggle"  , NULL };
 static const char *volupcmd[]   = { BIN "/special_keys.sh", "volup"      , NULL };
@@ -100,8 +121,8 @@ static Key keys[] = {
 	STACKKEYS(MODKEY|ShiftMask,                push)
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.03} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.03} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.02} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.02} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -137,17 +158,26 @@ static Key keys[] = {
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+
+// ClkClientWin   ==> A window on the screen
+// ClkLtSymbol    ==> Click Layout Symbol in Top Bar
+// ClkRootWin     ==> Click monitor??
+// ClkStatusText
+// ClkTagBar      ==> Clicking one of the numbered tags
+// ClkWinTitle    ==> Window Title
+
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkLtSymbol,          0,              LEFT_CLICK,     setlayout,      {0} },
+	{ ClkLtSymbol,          0,              RIGHT_CLICK,    setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,              MIDDLE_CLICK,   zoom,           {0} },
+	{ ClkStatusText,        0,              MIDDLE_CLICK,   spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              LEFT_CLICK,     spawn,          {.v = wificmd } },
+	{ ClkClientWin,         MODKEY,         LEFT_CLICK,     movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         MIDDLE_CLICK,   togglefloating, {0} },
+	{ ClkClientWin,         MODKEY,         RIGHT_CLICK,    resizemouse,    {0} },
+	{ ClkTagBar,            0,              LEFT_CLICK,     view,           {0} },
+	{ ClkTagBar,            0,              RIGHT_CLICK,    toggleview,     {0} },
+	{ ClkTagBar,            MODKEY,         LEFT_CLICK,     tag,            {0} },
+	{ ClkTagBar,            MODKEY,         RIGHT_CLICK,    toggletag,      {0} },
 };
