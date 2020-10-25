@@ -76,6 +76,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define ALT_KEY Mod1Mask
 
 
 // Super+num             ==> Change view to tag numbered num
@@ -103,7 +104,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { BIN "/dmenu_shortcut", NULL };
+static const char *dmenucmd[] = { BIN "/dmenu_shortcut", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { BIN "/st_tabbed", NULL };
 static const char *wificmd[]  = { BIN "/wifi-connect", NULL };
 
@@ -137,10 +138,26 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = +1 } },
+
+	// Cycle the monitors
+	{ MODKEY,                       XK_comma,  focusmon,       {.i =  0 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = +1 } },
+
+	// Move window to previous or next monitor
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i =  0 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = -1 } },
+
+	// Yes the numbers don't match, that is because for some reason the monitor
+	// numbers aren't properly aligned and I don't know how to fix that
+	// Focus a specific monitor
+	{ ALT_KEY,                      XK_1,  focusmon,       {.i = 1 } },
+	{ ALT_KEY,                      XK_2,  focusmon,       {.i = 3 } },
+	{ ALT_KEY,                      XK_3,  focusmon,       {.i = 2 } },
+	// Move window to specific monitor
+	{ ALT_KEY|ShiftMask,            XK_1,  tagmon,         {.i = 1 } },
+	{ ALT_KEY|ShiftMask,            XK_2,  tagmon,         {.i = 3 } },
+	{ ALT_KEY|ShiftMask,            XK_3,  tagmon,         {.i = 2 } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

@@ -741,6 +741,15 @@ dirtomon(int dir)
 	Monitor *m = NULL;
 
 	if (dir > 0) {
+		// If greater than zero, then a specific monitor
+		for (m = mons; m->next && dir > 1; m = m->next, dir--);
+
+		// If dir is still greater than 1 then the selected monitor doesn't
+		// exist, so default to current
+		if (dir > 1) {
+			m = selmon;
+		}
+	} else if (dir == 0) {
 		if (!(m = selmon->next))
 			m = mons;
 	} else if (selmon == mons)
