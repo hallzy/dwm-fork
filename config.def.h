@@ -85,7 +85,8 @@ static const Layout layouts[] = {
 //                           current tag
 // Super+ctrl+shift+num  ==> Show the active window on tag 'num' as well
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY,                       KEY,      viewAllMon,     {.ui = 1 << TAG} }, \
+	{ MODKEY|ALT_KEY,               KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },

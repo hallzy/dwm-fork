@@ -242,6 +242,7 @@ static void updatestatus(void);
 static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
+static void viewAllMon(const Arg *arg);
 static void view(const Arg *arg);
 static void warp(const Client *c);
 static Client *wintoclient(Window w);
@@ -2156,6 +2157,20 @@ updatewmhints(Client *c)
 			c->neverfocus = 0;
 		XFree(wmh);
 	}
+}
+
+void
+viewAllMon(const Arg *arg) {
+	// Save current monitor as a temp variable
+	Monitor *selmonTmp = selmon;
+
+	// Loop through all the monitors changing what the current monitor is
+	for (selmon = mons; selmon; selmon = selmon->next) {
+		view(arg);
+	}
+
+	// Restore current selected monitor
+	selmon = selmonTmp;
 }
 
 void
