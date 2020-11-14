@@ -57,13 +57,13 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 }, */
 };
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -115,6 +115,11 @@ static const char *volupcmd[]   = { BIN "/special_keys.sh", "volup"      , NULL 
 static const char *voldowncmd[] = { BIN "/special_keys.sh", "voldown"    , NULL };
 static const char *brupcmd[]    = { BIN "/special_keys.sh", "brightup"   , NULL };
 static const char *brdowncmd[]  = { BIN "/special_keys.sh", "brightdown" , NULL };
+
+static const char *mouseleftcmd[]  = { BIN "/special_keys.sh", "mouseleft" , NULL };
+static const char *mouserightcmd[] = { BIN "/special_keys.sh", "mouseright" , NULL };
+static const char *mousedowncmd[]  = { BIN "/special_keys.sh", "mousedown" , NULL };
+static const char *mouseupcmd[]    = { BIN "/special_keys.sh", "mouseup" , NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -174,6 +179,11 @@ static Key keys[] = {
 	{ 0,                            VOL_UP_BTN, spawn,         {.v = volupcmd } },
 	{ 0,                            BRIGHT_UP_BTN, spawn,      {.v = brupcmd} },
 	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd} },
+
+	{ ControlMask | ALT_KEY,        XK_h,  spawn,              {.v = mouseleftcmd  } },
+	{ ControlMask | ALT_KEY,        XK_j,  spawn,              {.v = mousedowncmd  } },
+	{ ControlMask | ALT_KEY,        XK_k,  spawn,              {.v = mouseupcmd    } },
+	{ ControlMask | ALT_KEY,        XK_l,  spawn,              {.v = mouserightcmd } },
 };
 
 /* button definitions */
