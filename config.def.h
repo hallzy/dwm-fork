@@ -57,7 +57,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	/* { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 }, */
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -76,7 +76,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
-#define ALT_KEY Mod1Mask
+#define ALTKEY Mod1Mask
 
 
 // Super+num             ==> Change view to tag numbered num
@@ -86,7 +86,7 @@ static const Layout layouts[] = {
 // Super+ctrl+shift+num  ==> Show the active window on tag 'num' as well
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      viewAllMon,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ALT_KEY,               KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|ALTKEY,                KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
@@ -116,10 +116,10 @@ static const char *voldowncmd[] = { BIN "/special_keys.sh", "voldown"    , NULL 
 static const char *brupcmd[]    = { BIN "/special_keys.sh", "brightup"   , NULL };
 static const char *brdowncmd[]  = { BIN "/special_keys.sh", "brightdown" , NULL };
 
-static const char *mouseleftcmd[]  = { BIN "/special_keys.sh", "mouseleft" , NULL };
+static const char *mouseleftcmd[]  = { BIN "/special_keys.sh", "mouseleft"  , NULL };
 static const char *mouserightcmd[] = { BIN "/special_keys.sh", "mouseright" , NULL };
-static const char *mousedowncmd[]  = { BIN "/special_keys.sh", "mousedown" , NULL };
-static const char *mouseupcmd[]    = { BIN "/special_keys.sh", "mouseup" , NULL };
+static const char *mousedowncmd[]  = { BIN "/special_keys.sh", "mousedown"  , NULL };
+static const char *mouseupcmd[]    = { BIN "/special_keys.sh", "mouseup"    , NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -146,23 +146,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
 	// Cycle the monitors
-	{ MODKEY,                       XK_comma,  focusmon,       {.i =  0 } },
+	{ MODKEY,                       XK_comma,  focusmon,       {.i = +1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = -1 } },
 
-	// Move window to previous or next monitor
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i =  0 } },
+	// Move window to previous/next monitor
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = -1 } },
-
-	// Yes the numbers don't match, that is because for some reason the monitor
-	// numbers aren't properly aligned and I don't know how to fix that
-	// Focus a specific monitor
-	{ ALT_KEY,                      XK_1,  focusmon,       {.i = 1 } },
-	{ ALT_KEY,                      XK_2,  focusmon,       {.i = 3 } },
-	{ ALT_KEY,                      XK_3,  focusmon,       {.i = 2 } },
-	// Move window to specific monitor
-	{ ALT_KEY|ShiftMask,            XK_1,  tagmon,         {.i = 1 } },
-	{ ALT_KEY|ShiftMask,            XK_2,  tagmon,         {.i = 3 } },
-	{ ALT_KEY|ShiftMask,            XK_3,  tagmon,         {.i = 2 } },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -180,10 +169,10 @@ static Key keys[] = {
 	{ 0,                            BRIGHT_UP_BTN, spawn,      {.v = brupcmd} },
 	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd} },
 
-	{ ControlMask | ALT_KEY,        XK_h,  spawn,              {.v = mouseleftcmd  } },
-	{ ControlMask | ALT_KEY,        XK_j,  spawn,              {.v = mousedowncmd  } },
-	{ ControlMask | ALT_KEY,        XK_k,  spawn,              {.v = mouseupcmd    } },
-	{ ControlMask | ALT_KEY,        XK_l,  spawn,              {.v = mouserightcmd } },
+	{ ControlMask | ALTKEY,         XK_h,  spawn,              {.v = mouseleftcmd  } },
+	{ ControlMask | ALTKEY,         XK_j,  spawn,              {.v = mousedowncmd  } },
+	{ ControlMask | ALTKEY,         XK_k,  spawn,              {.v = mouseupcmd    } },
+	{ ControlMask | ALTKEY,         XK_l,  spawn,              {.v = mouserightcmd } },
 };
 
 /* button definitions */
