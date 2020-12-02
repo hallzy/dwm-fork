@@ -1,0 +1,45 @@
+From 54b3ebd727272af097e7dfb935b724f871fdde01 Mon Sep 17 00:00:00 2001
+From: Sebastian Jarsve <sebastianjarsve@gmail.com>
+Date: Tue, 26 Nov 2019 09:11:22 +0100
+Subject: [PATCH] Remove borders from specific clients
+
+Remove borders from clents when in monocle layout and in tile layout
+when there is only one client.
+---
+ dwm.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/dwm.c b/dwm.c
+index 4465af1..bfdb823 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -317,6 +317,10 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
+ 	int baseismin;
+ 	Monitor *m = c->mon;
+ 
++	// return 1 if layout is monocle
++	if (&monocle == c->mon->lt[c->mon->sellt]->arrange)
++		return 1;
++
+ 	/* set minimum possible */
+ 	*w = MAX(1, *w);
+ 	*h = MAX(1, *h);
+@@ -1282,6 +1286,15 @@ resizeclient(Client *c, int x, int y, int w, int h)
+ 	c->oldw = c->w; c->w = wc.width = w;
+ 	c->oldh = c->h; c->h = wc.height = h;
+ 	wc.border_width = c->bw;
++	if ((&monocle == c->mon->lt[c->mon->sellt]->arrange)
++			&& (!c->isfloating)
++			|| ((nexttiled(c->mon->clients) == c
++			&& !nexttiled(c->next)
++			&& (&tile == c->mon->lt[c->mon->sellt]->arrange)))) {
++		wc.border_width = 0;
++		c->w = wc.width += c->bw * 2;
++		c->h = wc.height += c->bw * 2;
++	}
+ 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+ 	configure(c);
+ 	XSync(dpy, False);
+-- 
+2.17.1
+
