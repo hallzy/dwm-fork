@@ -85,8 +85,8 @@ static const Layout layouts[] = {
 //                           current tag
 // Super+ctrl+shift+num  ==> Show the active window on tag 'num' as well
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      viewAllMon,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ALTKEY,                KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|ALTKEY,                KEY,      viewAllMon,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
@@ -162,12 +162,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_BackSpace, quit,        {0} },
-	{ 0,                            VOL_MUTE_BTN, spawn,       {.v = mutecmd } },
-	{ 0,                            VOL_DOWN_BTN, spawn,       {.v = voldowncmd } },
-	{ 0,                            VOL_UP_BTN, spawn,         {.v = volupcmd } },
-	{ 0,                            BRIGHT_UP_BTN, spawn,      {.v = brupcmd} },
-	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd} },
+	{ MODKEY|ShiftMask,             XK_BackSpace,    quit,     {0} },
+	{ 0,                            VOL_MUTE_BTN,    spawn,    {.v = mutecmd    } },
+	{ 0,                            VOL_DOWN_BTN,    spawn,    {.v = voldowncmd } },
+	{ 0,                            VOL_UP_BTN,      spawn,    {.v = volupcmd   } },
+	{ 0,                            BRIGHT_UP_BTN,   spawn,    {.v = brupcmd    } },
+	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd  } },
 
 	{ ControlMask | ALTKEY,         XK_h,  spawn,              {.v = mouseleftcmd  } },
 	{ ControlMask | ALTKEY,         XK_j,  spawn,              {.v = mousedowncmd  } },
