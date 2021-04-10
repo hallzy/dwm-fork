@@ -118,6 +118,7 @@ static const char *volupcmd[]   = { BIN "/special_keys.sh", "volup"      , NULL 
 static const char *voldowncmd[] = { BIN "/special_keys.sh", "voldown"    , NULL };
 static const char *brupcmd[]    = { BIN "/special_keys.sh", "brightup"   , NULL };
 static const char *brdowncmd[]  = { BIN "/special_keys.sh", "brightdown" , NULL };
+static const char *emojicmd[]   = { BIN "/em"                            , NULL };
 
 static const char *mouseleftcmd[]  = { BIN "/special_keys.sh", "mouseleft"  , NULL };
 static const char *mouserightcmd[] = { BIN "/special_keys.sh", "mouseright" , NULL };
@@ -171,6 +172,7 @@ static Key keys[] = {
 	{ 0,                            VOL_UP_BTN,      spawn,    {.v = volupcmd   } },
 	{ 0,                            BRIGHT_UP_BTN,   spawn,    {.v = brupcmd    } },
 	{ 0,                            BRIGHT_DOWN_BTN, spawn,    {.v = brdowncmd  } },
+	{ MODKEY,                       XK_e,            spawn,    {.v = emojicmd   } },
 
 	{ ControlMask | ALTKEY,         XK_h,  spawn,              {.v = mouseleftcmd  } },
 	{ ControlMask | ALTKEY,         XK_j,  spawn,              {.v = mousedowncmd  } },
